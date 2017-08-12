@@ -9,7 +9,6 @@ import javax.servlet.ServletContext;
 import online.blickle.juvr.data.UVRDataSet;
 import online.blickle.juvr.read.UVR1611Connection;
 import online.blickle.juvr.read.UVRCurrentDataReader;
-import online.blickle.resource.WebContextProperty;
 
 
 public class CachedDataSetAccess {
@@ -47,10 +46,10 @@ public class CachedDataSetAccess {
 	private UVRDataSet readDataSetFromHeating(ServletContext servletContext)
 			throws IOException {
 		UVRDataSet res;
-		WebContextProperty ctx = new WebContextProperty(servletContext);
 		UVR1611Connection conn = new UVR1611Connection(
-				ctx.getProperty("online.blickle.juvr.resource.UVRConnectionURL"),
-				ctx.getIntegerProperty("online.blickle.juvr.resource.UVRConnectionPort"));
+				servletContext.getInitParameter("online.blickle.juvr.resource.UVRConnectionURL"),
+				Integer.parseInt(servletContext.getInitParameter("online.blickle.juvr.resource.UVRConnectionPort"))
+				);
 		UVRCurrentDataReader reader = new UVRCurrentDataReader(conn);
 		res = reader.getCurrentData();
 		return res;
